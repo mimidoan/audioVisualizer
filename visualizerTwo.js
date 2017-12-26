@@ -14,7 +14,7 @@ function setup() {
   background(255,0,255);
   angleMode(DEGREES);
 
-  song = loadSound("sounds/xx.mp3", loaded);
+  song = loadSound("sounds/sorry.mp3", loaded);
   amp = new p5.Amplitude();
 
   img = loadImage("images/lillith.png");
@@ -39,11 +39,7 @@ function draw() {
 
   if(song.isPlaying()) {
 
-  //  if(volHist.length < 360) {
-     stroke(255);
-  //  } else {
-  //    stroke(random(255), random(255), random(255));
-  //  }
+   stroke(255);
    noFill();
 
 

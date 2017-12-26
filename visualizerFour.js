@@ -1,53 +1,65 @@
 var song;
 var button;
 var jump;
-var fft;
-var w;
+var amp;
+var color;
+var img;
+
 
 
 var volHist = [];
 
 
 function setup() {
-  createCanvas(500, 500);
+  createCanvas(700, 700);
   background(255,0,255);
-  colorMode(HSB);
   angleMode(DEGREES);
 
   song = loadSound("sounds/sorry.mp3", loaded);
-  fft = new p5.FFT(0, 64);
+  amp = new p5.Amplitude();
 
-  w = width / 64;
-
+  img = loadImage("images/lillith.png");
 
 }
+
 
 function draw() {
+  vol = amp.getLevel();;
+  rotate(PI);
+  image(img, width / 3, height/3, img.width/10, img.height/10);
 
-  background(0);
-  var spectrum = fft.analyze();
+  volHist.push(vol);
 
-  stroke(random(255), random(255),random(255));
-  for (var i = 0; i < spectrum.length; i++) {
-    var amp = spectrum[i];
-    fill(255, i, 255);
-    var y = map(amp, 0, 256, height, 0);
-    rect(i * w, y, w, height - y);
+  if(song.isPlaying()) {
+   stroke(255);
+   noFill();
 
-  }
+    translate(width / 2, height /2);
+    beginShape();
+    for (var i = 0; i < 360; i++) {
 
-  stroke(255);
-  noFill();
+      r = map(volHist[i], 0, 1, 10, height);
+      var x = r * cos(i);
+      var y = r * sin(i);
+
+      vertex(x, y);
+    }
+    endShape();
+      if(volHist.length > 360) {
+        volHist.splice(0, 1);
+      }
+    }
+
 
 
 }
-
 
 function loaded() {
   button = createButton("play");
   button.mousePressed(toggleSong);
   jump = createButton("jump");
   jump.mousePressed(jumpSong);
+
 }
 
 
